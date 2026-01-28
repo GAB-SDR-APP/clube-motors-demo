@@ -3,34 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clube Motors OS - Staging</title>
+    <title>Clube Motors OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* CONFIGURAÇÕES VISUAIS */
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         
-        /* Device Frame */
+        /* Garante que o que tiver essa classe SUMA da tela */
+        .hidden { display: none !important; }
+        
+        /* Animação de entrada suave */
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Moldura do Celular/Tablet */
         .device-frame {
-            width: 100%;
-            max-width: 400px;
-            height: 850px;
-            background: #fff;
-            border-radius: 40px;
+            width: 100%; max-width: 400px; height: 850px;
+            background: #fff; border-radius: 40px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            position: relative;
+            overflow: hidden; position: relative;
             border: 12px solid #1e293b;
         }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
+
+        /* Botão Pulsante do Live */
         .pulse-live { animation: pulse-red 2s infinite; }
         @keyframes pulse-red { 
             0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 
@@ -42,195 +40,137 @@
 <body>
 
     <div id="mode-selector" class="text-center text-white p-8 hidden">
-        <div class="mb-8 text-6xl">🛠️</div>
-        <h1 class="text-3xl font-bold mb-2">CM-OS <span class="text-blue-500">Staging</span></h1>
-        <p class="text-slate-400 mb-8">Selecione a interface para demonstrar:</p>
+        <div class="mb-4 text-6xl">🛠️</div>
+        <h1 class="text-3xl font-bold mb-2">Clube Motors OS</h1>
+        <p class="text-slate-400 mb-8 text-sm">Ambiente de Demonstração (Staging)</p>
         
         <div class="space-y-4 w-72 mx-auto">
-            <a href="?mode=mechanic" class="block w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-blue-900/50">
-                📱 Interface Mecânico
-            </a>
-            <a href="?mode=client" class="block w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition shadow-lg shadow-emerald-900/50">
-                👤 Interface Cliente
-            </a>
+            <button onclick="window.location.href='?mode=mechanic'" class="block w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-3">
+                <i class="fa-solid fa-tablet-screen-button"></i>
+                Ver Tablet (Mecânico)
+            </button>
+            
+            <button onclick="window.location.href='?mode=client'" class="block w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition shadow-lg flex items-center justify-center gap-3">
+                <i class="fa-solid fa-user"></i>
+                Ver Celular (Cliente)
+            </button>
         </div>
+        <p class="mt-8 text-xs text-slate-600">v1.0.4 • Powered by Nomark</p>
     </div>
 
     <div id="view-mechanic" class="device-frame hidden flex-col bg-slate-50 fade-in">
-        <div class="bg-slate-900 text-white p-6 pt-12 pb-8 rounded-b-[2.5rem] shadow-xl z-10">
-            <div class="flex justify-between items-start mb-4">
+        <div class="bg-slate-900 text-white p-6 pt-12 pb-6 rounded-b-[2rem] shadow-xl z-10">
+            <div class="flex justify-between items-start">
                 <div>
                     <span class="bg-blue-600 text-[10px] font-bold px-2 py-1 rounded text-white mb-2 inline-block">BOX 04</span>
-                    <h2 class="text-2xl font-bold">Chevrolet Onix</h2>
-                    <p class="text-sm text-slate-400">ABC-1234 • <span class="text-blue-400">Revisão 40k</span></p>
+                    <h2 class="text-xl font-bold">Chevrolet Onix</h2>
+                    <p class="text-xs text-slate-400">ABC-1234 • <span class="text-blue-400">Revisão 40k</span></p>
                 </div>
-                <div class="text-right">
-                    <div class="h-10 w-10 bg-slate-700 rounded-full flex items-center justify-center border-2 border-slate-600">
-                        <i class="fa-solid fa-user-gear text-slate-300"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex justify-between items-center mt-4 px-2">
-                <div class="flex flex-col items-center">
-                    <div class="w-3 h-3 bg-green-500 rounded-full mb-1"></div>
-                    <span class="text-[10px] text-green-500 font-bold">Check-in</span>
-                </div>
-                <div class="flex-1 h-0.5 bg-green-500/30 mx-2"></div>
-                <div class="flex flex-col items-center">
-                    <div class="w-4 h-4 bg-blue-500 rounded-full mb-1 ring-4 ring-blue-500/20"></div>
-                    <span class="text-[10px] text-blue-400 font-bold">Inspeção</span>
-                </div>
-                <div class="flex-1 h-0.5 bg-slate-700 mx-2"></div>
-                <div class="flex flex-col items-center">
-                    <div class="w-3 h-3 bg-slate-700 rounded-full mb-1"></div>
-                    <span class="text-[10px] text-slate-600">Execução</span>
+                <div class="h-8 w-8 bg-slate-700 rounded-full flex items-center justify-center border border-slate-600">
+                    <i class="fa-solid fa-user-gear text-xs text-slate-300"></i>
                 </div>
             </div>
         </div>
 
         <div class="flex-1 overflow-y-auto p-5 pb-24">
-            <div class="flex justify-between items-end mb-4">
-                <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider">Checklist ISO-CM902</h3>
-                <span class="text-xs font-bold text-blue-600">1/3 Pendente</span>
-            </div>
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Checklist ISO-CM902</h3>
 
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-4 opacity-60 grayscale">
-                <div class="flex items-center justify-between mb-2">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-3 opacity-60">
+                <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">
-                            <i class="fa-solid fa-check"></i>
-                        </div>
-                        <span class="font-bold text-slate-700">Nível de Óleo</span>
+                        <div class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></div>
+                        <span class="font-bold text-slate-700 text-sm">Nível de Óleo</span>
                     </div>
-                    <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">OK</span>
+                    <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded">OK</span>
                 </div>
             </div>
 
-            <div class="bg-white p-5 rounded-2xl shadow-lg border-l-4 border-blue-500 mb-4 relative transform transition hover:scale-[1.02]">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
-                            <i class="fa-solid fa-camera"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800">Sistema de Freio</h4>
-                            <p class="text-xs text-slate-500">Obrigatório: Foto comparativa</p>
-                        </div>
+            <div class="bg-white p-4 rounded-2xl shadow-md border-l-4 border-blue-500 mb-3 relative">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-camera"></i></div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm">Freios</h4>
+                        <p class="text-[10px] text-slate-500">Foto Obrigatória</p>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="h-28 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center text-slate-400 cursor-pointer hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 transition group">
-                        <i class="fa-solid fa-camera text-2xl mb-2 group-hover:scale-110 transition"></i>
-                        <span class="text-[10px] font-extrabold uppercase">Peça Velha</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="h-20 bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-400">
+                        <i class="fa-solid fa-camera mb-1"></i> <span class="text-[9px] font-bold">VELHA</span>
                     </div>
-                    <div class="h-28 bg-slate-50 border-2 border-dashed border-slate-300 rounded-xl flex flex-col items-center justify-center text-slate-400 cursor-pointer hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-500 transition group">
-                        <i class="fa-solid fa-box-open text-2xl mb-2 group-hover:scale-110 transition"></i>
-                        <span class="text-[10px] font-extrabold uppercase">Peça Nova</span>
+                    <div class="h-20 bg-slate-50 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center text-slate-400">
+                        <i class="fa-solid fa-box-open mb-1"></i> <span class="text-[9px] font-bold">NOVA</span>
                     </div>
                 </div>
-                
-                <div class="mt-4 flex gap-2">
-                    <button class="flex-1 py-2 rounded-lg text-xs font-bold bg-slate-100 text-slate-500 hover:bg-slate-200">Reprovar</button>
-                    <button class="flex-1 py-2 rounded-lg text-xs font-bold bg-blue-600 text-white shadow-md shadow-blue-200 hover:bg-blue-700">Salvar & Enviar</button>
-                </div>
-            </div>
-
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-4 opacity-50">
-                <div class="flex items-center gap-3">
-                    <div class="w-6 h-6 rounded-full border-2 border-slate-200 flex items-center justify-center"></div>
-                    <span class="font-bold text-slate-400">Rodízio de Pneus</span>
-                </div>
+                <button onclick="alert('Salvo no Banco de Dados!')" class="w-full mt-3 bg-blue-600 text-white text-xs font-bold py-3 rounded-lg">Salvar Evidência</button>
             </div>
         </div>
-
-        <div class="absolute bottom-0 left-0 w-full p-6 bg-white border-t border-slate-100">
-            <button onclick="alert('Na versão real, isso dispara a notificação WhatsApp!')" class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl shadow-xl flex items-center justify-center gap-2 hover:bg-slate-800 transition">
-                <i class="fa-brands fa-whatsapp"></i> Notificar Cliente
+        
+        <div class="absolute bottom-0 w-full p-4 bg-white border-t border-slate-100">
+            <button onclick="window.open('?mode=client', '_blank')" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg flex items-center justify-center gap-2 text-sm">
+                <i class="fa-brands fa-whatsapp"></i> Enviar para Cliente
             </button>
         </div>
     </div>
 
     <div id="view-client" class="device-frame hidden flex-col bg-white fade-in">
-        <div class="bg-white/80 backdrop-blur-md p-4 border-b border-slate-100 flex justify-between items-center sticky top-0 z-20">
-            <h3 class="font-extrabold text-slate-900 tracking-tight">Clube<span class="text-blue-600">Motors</span></h3>
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 bg-red-500 rounded-full pulse-live"></div>
-                <span class="text-[10px] font-bold text-red-500 tracking-widest">LIVE</span>
+        <div class="bg-white/90 backdrop-blur p-4 border-b border-slate-100 flex justify-between items-center sticky top-0 z-20">
+            <h3 class="font-bold text-slate-900 text-sm">Clube<span class="text-blue-600">Motors</span></h3>
+            <div class="flex items-center gap-2 bg-red-50 px-2 py-1 rounded-full border border-red-100">
+                <div class="w-1.5 h-1.5 bg-red-500 rounded-full pulse-live"></div>
+                <span class="text-[9px] font-bold text-red-500 tracking-widest">AO VIVO</span>
             </div>
         </div>
 
-        <div class="p-8 text-center border-b border-slate-100 bg-slate-50">
-            <div class="w-20 h-20 bg-blue-100 text-blue-600 rounded-full mx-auto flex items-center justify-center text-3xl mb-4 ring-8 ring-blue-50">
+        <div class="p-6 text-center border-b border-slate-50 bg-slate-50/50">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl mb-3">
                 <i class="fa-solid fa-wrench"></i>
             </div>
-            <h2 class="text-xl font-bold text-slate-800 mb-1">Em Manutenção</h2>
-            <p class="text-sm text-slate-500">Mecânico <strong>Jorge</strong> está trabalhando no seu carro.</p>
-            
-            <div class="flex justify-center gap-1 mt-6">
-                <div class="h-1 w-8 bg-green-500 rounded-full"></div>
-                <div class="h-1 w-8 bg-blue-500 rounded-full animate-pulse"></div>
-                <div class="h-1 w-8 bg-slate-200 rounded-full"></div>
-                <div class="h-1 w-8 bg-slate-200 rounded-full"></div>
-            </div>
+            <h2 class="text-lg font-bold text-slate-800">Em Manutenção</h2>
+            <p class="text-xs text-slate-500 mb-4">Jorge está trabalhando no seu carro.</p>
+            <div class="flex justify-center gap-1"><div class="h-1 w-6 bg-green-500 rounded-full"></div><div class="h-1 w-6 bg-blue-500 rounded-full animate-pulse"></div><div class="h-1 w-6 bg-slate-200 rounded-full"></div></div>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-5 space-y-6 bg-slate-50/50">
-            
-            <div class="flex gap-4 opacity-50">
-                <div class="flex flex-col items-center">
-                    <div class="w-3 h-3 bg-slate-400 rounded-full"></div>
-                    <div class="flex-1 w-0.5 bg-slate-200 my-1"></div>
-                </div>
-                <div class="pb-4">
-                    <span class="text-xs font-bold text-slate-400">14:00</span>
-                    <div class="bg-white p-3 rounded-xl shadow-sm border border-slate-100 mt-1">
-                        <p class="text-sm font-medium text-slate-600">Veículo entrou no Box 04.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex gap-4">
-                <div class="flex flex-col items-center">
-                    <div class="w-4 h-4 bg-blue-600 rounded-full shadow-lg shadow-blue-500/50 ring-2 ring-white"></div>
-                    <div class="flex-1 w-0.5 bg-slate-200 my-1"></div>
-                </div>
-                <div class="pb-4 w-full">
-                    <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">AGORA • 14:15</span>
-                    
-                    <div class="bg-white rounded-2xl shadow-md border border-slate-100 mt-2 overflow-hidden">
-                        <div class="p-3 border-b border-slate-50 flex justify-between items-center bg-red-50/50">
-                            <span class="text-xs font-bold text-red-600 flex items-center gap-1">
-                                <i class="fa-solid fa-triangle-exclamation"></i> Ação Necessária
-                            </span>
+        <div class="flex-1 overflow-y-auto p-5 space-y-4">
+            <div class="flex gap-3">
+                <div class="flex flex-col items-center"><div class="w-3 h-3 bg-blue-600 rounded-full ring-2 ring-blue-100"></div><div class="flex-1 w-0.5 bg-slate-100 my-1"></div></div>
+                <div class="pb-2 w-full">
+                    <span class="text-[10px] font-bold text-blue-600">AGORA • 14:15</span>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 mt-2 p-3">
+                        <div class="flex items-center gap-2 mb-2 text-red-600 font-bold text-xs"><i class="fa-solid fa-triangle-exclamation"></i> Pastilhas Gastas</div>
+                        <div class="flex gap-2 mb-3">
+                           <div class="bg-slate-100 rounded h-16 w-1/2 flex items-center justify-center text-slate-300"><i class="fa-solid fa-image"></i></div>
+                           <div class="bg-slate-100 rounded h-16 w-1/2 flex items-center justify-center text-slate-300"><i class="fa-solid fa-box-open"></i></div>
                         </div>
-                        
-                        <div class="p-4">
-                            <h4 class="font-bold text-slate-800 text-sm">Pastilhas Gastas</h4>
-                            <p class="text-xs text-slate-500 mb-3">Item de segurança reprovado no checklist.</p>
-                            
-                            <div class="grid grid-cols-2 gap-2 mb-3">
-                                <div class="relative aspect-square bg-slate-100 rounded-lg overflow-hidden group">
-                                    <div class="absolute inset-0 flex items-center justify-center text-slate-300">
-                                        <i class="fa-solid fa-image text-2xl"></i>
-                                    </div>
-                                    <span class="absolute bottom-1 left-1 text-[8px] font-bold bg-black/60 text-white px-1 rounded">DO CARRO</span>
-                                </div>
-                                <div class="relative aspect-square bg-slate-100 rounded-lg overflow-hidden group">
-                                    <div class="absolute inset-0 flex items-center justify-center text-slate-300">
-                                        <i class="fa-solid fa-box-open text-2xl"></i>
-                                    </div>
-                                    <span class="absolute bottom-1 left-1 text-[8px] font-bold bg-black/60 text-white px-1 rounded">NOVA</span>
-                                </div>
-                            </div>
-                            
-                            <button class="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-3 rounded-xl shadow-lg shadow-green-200/50 transition transform active:scale-95">
-                                Autorizar Troca
-                            </button>
-                        </div>
+                        <button class="w-full bg-green-600 text-white text-xs font-bold py-2 rounded-lg">Autorizar Troca</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Essa função garante que o código só rode depois que a tela azul carregar
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // 1. Pega o "mode" da URL (ex: ?mode=mechanic)
+            const params = new URLSearchParams(window.location.search);
+            const mode = params.get('mode');
+
+            // 2. Esconde tudo primeiro por segurança
+            document.getElementById('mode-selector').classList.add('hidden');
+            document.getElementById('view-mechanic').classList.add('hidden');
+            document.getElementById('view-client').classList.add('hidden');
+
+            // 3. Decide qual mostrar
+            if (mode === 'mechanic') {
+                document.getElementById('view-mechanic').classList.remove('hidden');
+            } else if (mode === 'client') {
+                document.getElementById('view-client').classList.remove('hidden');
+            } else {
+                // Se não tiver nada na URL, mostra o menu de botões
+                document.getElementById('mode-selector').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
