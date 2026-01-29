@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clube Motors OS - Credenciado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F3F4F6; }
+        .app-container { max-width: 600px; margin: 0 auto; min-height: 100vh; background: white; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        /* Estilo dos Uploads */
+        .upload-box { border: 2px dashed #CBD5E1; border-radius: 12px; height: 100px; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; transition: 0.2s; background: #F8FAFC; }
+        .upload-box:hover { border-color: #005BD3; background: #EFF6FF; }
+        .upload-box.filled { border-style: solid; border-color: #10B981; background: #ECFDF5; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+<div class="app-container" id="app">
+    
+    <header class="bg-blue-700 text-white p-4 sticky top-0 z-10 flex justify-between items-center shadow-md">
+        <div>
+            <h1 class="font-black text-lg tracking-tighter">CLUBE MOTORS <span class="text-blue-300">OS</span></h1>
+            <p class="text-xs opacity-80">Painel do Credenciado</p>
+        </div>
+        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center font-bold">CM</div>
+    </header>
+
+    <div id="screen-dashboard" class="p-4 fade-in">
+        <h2 class="text-xl font-bold mb-4 text-gray-700">Veículos no Pátio</h2>
+        
+        <div class="space-y-3" id="os-list">
+            </div>
+    </div>
+
+    <div id="screen-os-detail" class="hidden fade-in pb-20">
+        <div class="bg-gray-100 p-4 border-b flex items-center gap-3 sticky top-[60px] z-10">
+            <button onclick="goBack()" class="text-blue-700"><i class="fas fa-arrow-left fa-lg"></i></button>
+            <div>
+                <h2 class="font-bold text-lg" id="detail-car-name">Carregando...</h2>
+                <p class="text-xs text-gray-500" id="detail-plate">...</p>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <h3 class="font-bold text-gray-600 mb-2 uppercase text-xs tracking-wider">Checklist de Entrada</h3>
+            <div id="checklist-container" class="space-y-3">
+                </div>
+        </div>
+
+        <div class="fixed bottom-4 left-0 w-full px-4 flex justify-center">
+            <button onclick="openModalServico()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-xl flex items-center gap-2 transition transform hover:scale-105" style="max-width: 600px;">
+                <i class="fas fa-plus-circle"></i> ADICIONAR SERVIÇO / CONDENAR PEÇA
+            </button>
+        </div>
+    </div>
+
+    <div id="modal-service" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl animate-fade-in-up">
+            
+            <div class="bg-gray-50 p-4 border-b flex justify-between items-center sticky top-0 bg-white z-10">
+                <h3 class="font-black text-gray-800 text-lg">Nova Evidência</h3>
+                <button onclick="closeModalServico()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times fa-lg"></i></button>
+            </div>
+
+            <div class="p-5 space-y-6">
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Peça / Serviço</label>
+                    <select id="input-peca" class="w-full p-3 border-2 border-gray-200 rounded-xl font-bold text-gray-700 focus:border-blue-500 outline-none bg-white">
+                        <option value="">Selecione o problema...</option>
+                        <option value="Pastilha de Freio">Pastilha de Freio</option>
+                        <option value="Disco de Freio">Disco de Freio</option>
+                        <option value="Amortecedor Dianteiro">Amortecedor Dianteiro</option>
+                        <option value="Correia Dentada">Correia Dentada</option>
+                        <option value="Vazamento de Óleo">Vazamento de Óleo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Evidências Visuais (Obrigatório)</label>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div class="upload-box" onclick="fakeUpload(this)">
+                            <i class="fas fa-camera text-gray-400 text-2xl mb-1"></i>
+                            <span class="text-[10px] font-bold text-gray-500 text-center">PEÇA DO<br>CLIENTE (VELHA)</span>
+                        </div>
+                        <div class="upload-box" onclick="fakeUpload(this)">
+                            <i class="fas fa-box-open text-gray-400 text-2xl mb-1"></i>
+                            <span class="text-[10px] font-bold text-gray-500 text-center">COMO DEVE SER<br>(PEÇA NOVA)</span>
+                        </div>
+                    </div>
+                    <div class="upload-box w-full" onclick="fakeUpload(this)">
+                        <i class="fas fa-video text-gray-400 text-2xl mb-1"></i>
+                        <span class="text-[10px] font-bold text-gray-500">VÍDEO DO PROBLEMA (MÁX 10s)</span>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <label class="block text-xs font-bold text-blue-800 uppercase mb-3 flex items-center gap-2">
+                        <i class="fas fa-calculator"></i> Orçamento Inteligente
+                    </label>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="text-[10px] font-bold text-gray-500">PREÇO DE MERCADO</span>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-gray-400 font-bold">R$</span>
+                                <input type="number" id="price-market" oninput="calcPrice()" class="w-full pl-8 p-2 rounded-lg border border-gray-300 font-bold text-gray-500 text-sm strike-through" placeholder="0,00">
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="text-[10px] font-bold text-green-600">PREÇO CLUBE MOTORS</span>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-green-600 font-bold">R$</span>
+                                <input type="text" id="price-clube" readonly class="w-full pl-8 p-2 rounded-lg border-2 border-green-500 bg-white font-black text-green-700 text-lg shadow-sm" value="0,00">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-blue-600 mt-2 text-center font-medium">Economia gerada para o cliente: <span id="economy-display" class="font-bold">R$ 0,00</span></p>
+                </div>
+
+                <button onclick="saveEvidence()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg text-lg uppercase tracking-wide transition transform active:scale-95">
+                    SALVAR E NOTIFICAR CLIENTE
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- 1. DADOS MOCKADOS (O Back-end Fictício) ---
+    const mockOS = [
+        { id: 1001, carro: "Chevrolet Onix 1.0 Turbo", placa: "ABC-1234", cliente: "Cadu Martins", status: "Em Análise", items: [] },
+        { id: 1002, carro: "Toyota Corolla XEi", placa: "XYZ-9876", cliente: "Danilo Silva", status: "Aguardando", items: [] },
+        { id: 1003, carro: "Jeep Renegade", placa: "JEEP-2024", cliente: "Junior Dev", status: "Finalizado", items: [] }
+    ];
+
+    let currentOS = null;
+
+    // --- 2. LÓGICA DE NAVEGAÇÃO ---
+    function init() {
+        renderDashboard();
+    }
+
+    function renderDashboard() {
+        const list = document.getElementById('os-list');
+        list.innerHTML = mockOS.map(os => `
+            <div onclick="openOS(${os.id})" class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center cursor-pointer hover:border-blue-500 transition">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-gray-800">${os.carro}</span>
+                        <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-600 font-bold">${os.placa}</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">${os.cliente} • OS #${os.id}</p>
+                </div>
+                <div class="flex flex-col items-end">
+                    <span class="text-xs font-bold ${getStatusColor(os.status)} px-2 py-1 rounded-full">${os.status}</span>
+                    <i class="fas fa-chevron-right text-gray-300 mt-2"></i>
+                </div>
+            </div>
+        `).join('');
+
+        document.getElementById('screen-dashboard').classList.remove('hidden');
+        document.getElementById('screen-os-detail').classList.add('hidden');
+    }
+
+    function getStatusColor(status) {
+        if(status === 'Em Análise') return 'bg-yellow-100 text-yellow-700';
+        if(status === 'Finalizado') return 'bg-green-100 text-green-700';
+        return 'bg-gray-100 text-gray-600';
+    }
+
+    function openOS(id) {
+        currentOS = mockOS.find(o => o.id === id);
+        document.getElementById('detail-car-name').innerText = currentOS.carro;
+        document.getElementById('detail-plate').innerText = `OS #${currentOS.id} • ${currentOS.placa}`;
+        
+        renderChecklist();
+        
+        document.getElementById('screen-dashboard').classList.add('hidden');
+        document.getElementById('screen-os-detail').classList.remove('hidden');
+        window.scrollTo(0,0);
+    }
+
+    function renderChecklist() {
+        const container = document.getElementById('checklist-container');
+        if(currentOS.items.length === 0) {
+            container.innerHTML = `<div class="text-center py-10 text-gray-400 text-sm">Nenhum serviço apontado ainda.<br>Clique em Adicionar Serviço.</div>`;
+        } else {
+            container.innerHTML = currentOS.items.map(item => `
+                <div class="bg-white p-4 rounded-xl border-l-4 border-red-500 shadow-sm">
+                    <div class="flex justify-between">
+                        <h4 class="font-bold text-gray-800">${item.peca}</h4>
+                        <span class="text-green-600 font-black text-sm">R$ ${item.precoClube}</span>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold"><i class="fas fa-camera"></i> FOTOS OK</span>
+                        <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded font-bold"><i class="fas fa-video"></i> VÍDEO OK</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-2 strike-through">Mercado: R$ ${item.precoMercado}</p>
+                </div>
+            `).join('');
+        }
+    }
+
+    function goBack() {
+        renderDashboard();
+    }
+
+    // --- 3. LÓGICA DO MODAL (POP-UP) ---
+    function openModalServico() {
+        // Reseta campos
+        document.getElementById('input-peca').value = "";
+        document.getElementById('price-market').value = "";
+        document.getElementById('price-clube').value = "0,00";
+        document.querySelectorAll('.upload-box').forEach(b => {
+            b.classList.remove('filled');
+            b.style.borderColor = '#CBD5E1';
+        });
+        document.getElementById('modal-service').classList.remove('hidden');
+    }
+
+    function closeModalServico() {
+        document.getElementById('modal-service').classList.add('hidden');
+    }
+
+    // Simula upload de imagem/video
+    function fakeUpload(el) {
+        el.classList.add('filled');
+        el.style.borderColor = '#10B981';
+        // Feedback visual
+        const originalHtml = el.innerHTML;
+        el.innerHTML = '<i class="fas fa-check-circle text-green-500 text-3xl animate-bounce"></i>';
+        setTimeout(() => {
+           // Mantém o estado de "carregado" visualmente
+        }, 500);
+    }
+
+    // --- 4. CÁLCULO DE PREÇO INTELIGENTE (+35% ou regra reversa) ---
+    // Regra pedida: "O sistema aumenta o valor de cada peça da clube motors pelo valor + 35%"
+    // Ou seja: Custo da Peça + 35% = Preço Clube.
+    // Mas aqui estamos simulando que o mecânico sabe o preço de MERCADO e queremos mostrar que o CLUBE é mais barato.
+    // Vamos fazer uma lógica inversa para demo: Preço Clube = Preço Mercado - 20% (Só pra dar o efeito visual de desconto).
+    
+    function calcPrice() {
+        let marketPrice = parseFloat(document.getElementById('price-market').value);
+        if(isNaN(marketPrice)) marketPrice = 0;
+
+        // Lógica de "Desconto Visual" para o cliente
+        let clubPrice = marketPrice * 0.80; // 20% mais barato que a oficina comum
+
+        document.getElementById('price-clube').value = clubPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+        
+        let savings = marketPrice - clubPrice;
+        document.getElementById('economy-display').innerText = "R$ " + savings.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    }
+
+    function saveEvidence() {
+        const peca = document.getElementById('input-peca').value;
+        const precoMercado = document.getElementById('price-market').value;
+        const precoClube = document.getElementById('price-clube').value;
+
+        if(!peca || !precoMercado) {
+            alert("Preencha a peça e o preço de mercado.");
+            return;
+        }
+
+        // Salva no objeto mockado
+        currentOS.items.push({
+            peca: peca,
+            precoMercado: precoMercado,
+            precoClube: precoClube
+        });
+
+        closeModalServico();
+        renderChecklist();
+        
+        // Simula envio de notificação
+        alert(`🚀 LINK ENVIADO!\n\nO cliente ${currentOS.cliente} recebeu a notificação no WhatsApp com as fotos e a comparação de preço.`);
+    }
+
+    // Inicia o App
+    init();
+
+</script>
+</body>
+</html>
