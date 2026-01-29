@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clube Motors OS - Demo Funcional</title>
+    <title>Clube Motors OS - Fluxo Completo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -11,8 +11,8 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
         .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        .slide-up { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        .slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
@@ -25,6 +25,15 @@
             border: 12px solid #1e293b;
         }
 
+        /* Timeline Vertical */
+        .timeline-line { position: absolute; left: 19px; top: 10px; bottom: 0; width: 2px; background: #e2e8f0; z-index: 0; }
+        .timeline-item { position: relative; z-index: 10; display: flex; gap: 12px; padding-bottom: 24px; }
+        .dot { width: 16px; height: 16px; border-radius: 50%; background: #e2e8f0; border: 2px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0; margin-top: 4px; }
+        .dot.active { background: #10b981; border-color: #fff; }
+        .dot.current { background: #3b82f6; box-shadow: 0 0 0 4px #dbeafe; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); } }
+
         /* Upload Box */
         .upload-box { transition: all 0.2s; border: 2px dashed #cbd5e1; background: #f8fafc; }
         .upload-box:active { transform: scale(0.95); }
@@ -36,32 +45,37 @@
     <div id="mode-selector" class="text-center text-white p-8 w-full max-w-md fade-in">
         <div class="mb-6 text-7xl animate-bounce">🛠️</div>
         <h1 class="text-4xl font-black mb-2 tracking-tight">Clube Motors</h1>
-        <p class="text-slate-400 mb-10 text-sm">Demo de Checklist V2.0</p>
+        <p class="text-slate-400 mb-10 text-sm">Demo de Fluxo Real</p>
         
         <div class="space-y-4">
-            <button onclick="switchMode('mechanic')" class="w-full bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3 transition">
+            <button onclick="switchMode('mechanic')" class="w-full bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3 transition shadow-lg border border-blue-400">
                 <i class="fa-solid fa-tablet-screen-button text-xl"></i> Acessar Mecânico
             </button>
-            <button onclick="switchMode('client')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3 transition">
+            <button onclick="switchMode('client')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3 transition shadow-lg border border-emerald-400">
                 <i class="fa-solid fa-mobile-screen text-xl"></i> Acessar Cliente
             </button>
         </div>
-        <p class="mt-8 text-xs text-slate-500">Dica: Faça o fluxo do mecânico primeiro.</p>
+        
+        <div class="mt-8 p-4 bg-slate-800 rounded-lg text-xs text-slate-400 text-left">
+            <strong>Instrução de Demo:</strong><br>
+            1. Entre como Mecânico e envie o orçamento.<br>
+            2. Saia e entre como Cliente para aprovar.<br>
+            3. Use o botão "Simular Fluxo" para ver as etapas finais.
+        </div>
     </div>
 
     <div id="view-mechanic" class="device-frame hidden flex-col bg-slate-50 fade-in">
-        
         <div class="bg-slate-900 text-white p-6 pt-10 rounded-b-[2rem] shadow-xl z-20">
             <div class="flex justify-between items-center mb-4">
                 <div class="bg-blue-600 text-[10px] font-bold px-2 py-1 rounded">BOX 04</div>
                 <button onclick="location.reload()" class="text-slate-400"><i class="fa-solid fa-power-off"></i></button>
             </div>
             <h2 class="text-2xl font-black">Olá, Junior</h2>
-            <p class="text-sm text-slate-400">Selecione o veículo para iniciar.</p>
+            <p class="text-sm text-slate-400">Fluxo de Trabalho: Ativo</p>
         </div>
 
         <div id="mech-dashboard" class="flex-1 overflow-y-auto p-4 space-y-3">
-            <div onclick="startBudget('Chevrolet Onix', 'ABC-1234')" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 active:scale-95 transition cursor-pointer flex justify-between items-center group hover:border-blue-400">
+            <div onclick="openChecklist()" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 active:scale-95 transition cursor-pointer flex justify-between items-center group hover:border-blue-400">
                 <div class="flex gap-4 items-center">
                     <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
                         <i class="fa-solid fa-car"></i>
@@ -80,19 +94,19 @@
 
         <div id="mech-checklist" class="hidden flex-1 flex flex-col h-full bg-slate-50 absolute top-0 w-full z-30 slide-up">
             <div class="bg-white p-4 pt-12 border-b border-slate-200 flex items-center gap-3 sticky top-0 z-40">
-                <button onclick="closeBudget()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600"><i class="fa-solid fa-arrow-left"></i></button>
+                <button onclick="closeChecklist()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600"><i class="fa-solid fa-arrow-left"></i></button>
                 <div>
                     <h2 class="font-bold text-slate-800 leading-none">Checklist Geral</h2>
                     <p class="text-xs text-slate-500 mt-1">Onix • ABC-1234</p>
                 </div>
             </div>
 
-            <div id="checklist-container" class="flex-1 overflow-y-auto p-4 pb-32 space-y-3">
+            <div id="checklist-items" class="flex-1 overflow-y-auto p-4 pb-32 space-y-3">
                 </div>
 
             <div class="absolute bottom-0 w-full p-4 bg-white border-t border-slate-100">
-                <button onclick="sendBudgetToClient()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition">
-                    <i class="fa-solid fa-paper-plane"></i> FINALIZAR E ENVIAR
+                <button onclick="sendBudget()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transform active:scale-95 transition">
+                    <i class="fa-solid fa-paper-plane"></i> ENVIAR PARA O CLIENTE
                 </button>
             </div>
         </div>
@@ -102,15 +116,15 @@
                 
                 <div class="p-5 border-b sticky top-0 bg-white z-10 flex justify-between items-center">
                     <div>
-                        <span class="text-[10px] font-bold text-red-500 uppercase">Condenando Peça</span>
-                        <h3 class="font-bold text-xl text-slate-800" id="modal-item-title">Item X</h3>
+                        <span class="text-[10px] font-bold text-red-500 uppercase">Apontando Falha</span>
+                        <h3 class="font-bold text-xl text-slate-800" id="modal-title">Peça</h3>
                     </div>
-                    <button onclick="closeModal()" class="text-slate-400 bg-slate-100 w-8 h-8 rounded-full"><i class="fa-solid fa-times"></i></button>
+                    <button onclick="closeModal()" class="text-slate-400 w-8 h-8 rounded-full bg-slate-100"><i class="fa-solid fa-times"></i></button>
                 </div>
 
                 <div class="p-6 space-y-6">
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">3 Fotos + 1 Vídeo (Obrigatório)</label>
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Evidências Visuais (Obrigatório)</label>
                         <div class="grid grid-cols-3 gap-2 mb-2">
                             <div onclick="fakeUpload(this)" class="upload-box h-20 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer"><i class="fa-solid fa-camera"></i></div>
                             <div onclick="fakeUpload(this)" class="upload-box h-20 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer"><i class="fa-solid fa-camera"></i></div>
@@ -122,27 +136,29 @@
                     </div>
 
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <label class="block text-xs font-bold text-blue-600 uppercase mb-3">Orçamento</label>
-                        <div class="grid grid-cols-2 gap-4">
+                        <label class="block text-xs font-bold text-blue-600 uppercase mb-3">Definição de Valores</label>
+                        <div class="grid grid-cols-1 gap-4">
                             <div>
-                                <span class="text-[10px] font-bold text-slate-400">PREÇO MERCADO</span>
+                                <span class="text-[10px] font-bold text-green-600">VALOR CLUBE MOTORS (Você Digita)</span>
                                 <div class="relative">
-                                    <span class="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                                    <input type="number" id="input-market-price" oninput="calcModalPrice()" class="w-full pl-8 p-2 rounded-lg border border-slate-300 text-slate-600 font-bold" placeholder="0">
+                                    <span class="absolute left-3 top-3 text-green-600 font-bold">R$</span>
+                                    <input type="number" id="input-club-price" oninput="calcMarketPrice()" class="w-full pl-10 p-3 rounded-lg border-2 border-green-500 bg-white text-green-700 font-black text-lg focus:outline-none focus:ring-2 focus:ring-green-200" placeholder="0,00">
                                 </div>
                             </div>
+                            
                             <div>
-                                <span class="text-[10px] font-bold text-green-600">PREÇO CLUBE</span>
+                                <span class="text-[10px] font-bold text-slate-400">VALOR DE MERCADO (Automático +40%)</span>
                                 <div class="relative">
-                                    <span class="absolute left-3 top-2.5 text-green-600 font-bold">R$</span>
-                                    <input type="text" id="input-club-price" readonly class="w-full pl-8 p-2 rounded-lg border-2 border-green-500 bg-white text-green-700 font-black" value="0,00">
+                                    <span class="absolute left-3 top-3 text-slate-400 text-sm">R$</span>
+                                    <input type="text" id="input-market-price" readonly class="w-full pl-10 p-3 rounded-lg border border-slate-300 bg-slate-100 text-slate-500 font-bold" value="0,00">
                                 </div>
+                                <p class="text-[10px] text-slate-400 mt-1">*Adicionado margem de mercado automaticamente.</p>
                             </div>
                         </div>
                     </div>
 
-                    <button onclick="saveIssue()" class="w-full bg-red-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-red-700 transition">
-                        CONFIRMAR PROBLEMA
+                    <button onclick="confirmIssue()" class="w-full bg-red-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-red-700 transition">
+                        CONFIRMAR E SALVAR
                     </button>
                 </div>
             </div>
@@ -150,127 +166,182 @@
     </div>
 
     <div id="view-client" class="device-frame hidden flex-col bg-white fade-in">
+        
         <div class="bg-white/90 backdrop-blur p-4 pt-8 border-b border-slate-100 flex justify-between items-center sticky top-0 z-20">
             <div>
                 <h3 class="font-black text-slate-900 text-lg tracking-tight">Clube<span class="text-blue-600">Motors</span></h3>
-                <p class="text-[10px] text-slate-400 font-bold">ORÇAMENTO DIGITAL</p>
+                <p class="text-[10px] text-slate-400 font-bold">ACOMPANHAMENTO ONLINE</p>
             </div>
-            <div class="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full border border-green-100">
-                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span class="text-[10px] font-bold text-green-600">ONLINE</span>
+            <div id="status-badge" class="flex items-center gap-2 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                <div class="w-2 h-2 bg-slate-400 rounded-full"></div>
+                <span class="text-[10px] font-bold text-slate-500">CONECTADO</span>
             </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto bg-slate-50 p-4 pb-24">
-            <div class="text-center mb-6 mt-2">
-                <h2 class="text-xl font-bold text-slate-800">Resumo da Análise</h2>
-                <p class="text-xs text-slate-500">Aprove os itens abaixo para iniciarmos.</p>
-            </div>
+        <div class="flex-1 overflow-y-auto bg-slate-50 pb-20">
+            
+            <div class="bg-white p-6 border-b border-slate-100 mb-4">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6">Status do Veículo</h3>
+                <div class="relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="dot active"></div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">Veículo Recebido</p>
+                            <p class="text-[10px] text-slate-400">08:00 • Recepção</p>
+                        </div>
+                    </div>
 
-            <div id="client-cards-container" class="space-y-4">
-                <div class="text-center py-10 text-slate-400 text-sm">Aguardando análise do mecânico...</div>
-            </div>
+                    <div class="timeline-item">
+                        <div id="dot-analyzing" class="dot current"></div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">Em Análise Técnica</p>
+                            <p class="text-[10px] text-slate-400">Mecânico está verificando itens...</p>
+                        </div>
+                    </div>
 
-            <div id="client-footer-total" class="hidden mt-6 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                <div class="flex justify-between items-end">
-                    <span class="text-xs font-bold text-slate-500">Total Aprovado:</span>
-                    <span class="text-2xl font-black text-green-600" id="total-price-display">R$ 0,00</span>
+                    <div class="timeline-item opacity-50" id="step-budget">
+                        <div id="dot-budget" class="dot"></div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">Orçamento Disponível</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item opacity-50" id="step-maintenance">
+                        <div id="dot-maintenance" class="dot"></div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">Em Manutenção</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item opacity-50" id="step-ready">
+                        <div id="dot-ready" class="dot"></div>
+                        <div>
+                            <p class="text-xs font-bold text-slate-800">Pronto para Retirada</p>
+                        </div>
+                    </div>
                 </div>
-                <button onclick="alert('Orçamento Aprovado! O serviço começará agora.')" class="w-full mt-3 bg-green-600 text-white font-bold py-3 rounded-lg shadow-lg">AUTORIZAR SERVIÇO</button>
+            </div>
+
+            <div id="client-content" class="p-4">
+                
+                <div id="state-waiting" class="text-center py-10">
+                    <div class="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-sm font-bold text-slate-600">Aguardando envio do mecânico...</p>
+                    <p class="text-xs text-slate-400 mt-2">Você será notificado assim que a análise terminar.</p>
+                </div>
+
+                <div id="state-budget" class="hidden">
+                    <div class="bg-red-50 border border-red-100 p-4 rounded-xl mb-4 text-center">
+                        <p class="text-sm font-bold text-red-600"><i class="fa-solid fa-triangle-exclamation"></i> Ação Necessária</p>
+                        <p class="text-xs text-red-400">Aprove os itens abaixo para continuar.</p>
+                    </div>
+                    
+                    <div id="budget-list" class="space-y-4">
+                        </div>
+
+                    <div class="mt-6 bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                        <div class="flex justify-between items-end mb-4">
+                            <span class="text-xs font-bold text-slate-500">Total Clube Motors:</span>
+                            <span class="text-2xl font-black text-green-600" id="total-amount">R$ 0,00</span>
+                        </div>
+                        <button onclick="authorizeService()" class="w-full bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-green-700 transition">
+                            AUTORIZAR SERVIÇO
+                        </button>
+                    </div>
+                </div>
+
+                <div id="state-maintenance" class="hidden text-center py-8">
+                    <div class="w-24 h-24 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                        <i class="fa-solid fa-gear text-4xl text-blue-500 animate-spin-slow"></i>
+                        <div class="absolute -right-2 -bottom-2 bg-white p-2 rounded-full shadow"><i class="fa-solid fa-wrench text-slate-400"></i></div>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800">Mãos à obra!</h2>
+                    <p class="text-sm text-slate-500 mt-2 px-6">O mecânico Junior já iniciou os reparos autorizados. O tempo estimado é de 2 horas.</p>
+                    
+                    <button onclick="advanceToReady()" class="mt-12 bg-slate-800 text-white text-xs font-bold py-3 px-6 rounded-full opacity-80 hover:opacity-100 transition">
+                        🛠️ SIMULAR CONTINUAR FLUXO (Demo)
+                    </button>
+                </div>
+
+                <div id="state-ready" class="hidden text-center py-8 fade-in">
+                    <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-100">
+                        <i class="fa-solid fa-check text-4xl text-green-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-black text-slate-800">Tudo Pronto!</h2>
+                    <p class="text-sm text-slate-500 mt-2">Seu veículo já pode ser retirado.</p>
+                    
+                    <div class="mt-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-left">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Local de Retirada</p>
+                        <h3 class="font-bold text-slate-800 text-lg">Oficina Clube Motors - Zona Sul</h3>
+                        <p class="text-sm text-slate-500 mt-1">Av. das Nações Unidas, 1234<br>Box 04 • Mecânico Junior</p>
+                        
+                        <button class="w-full mt-4 bg-slate-100 text-slate-600 font-bold py-3 rounded-lg flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-map-location-dot"></i> COMO CHEGAR
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
 
     <script>
-        // --- DADOS DO SISTEMA ---
-        const checklistItems = [
-            "Óleo do Motor", "Filtro de Ar", "Pastilha de Freio", 
-            "Disco de Freio", "Suspensão Dianteira", "Pneus", 
-            "Correia Dentada", "Bateria"
-        ];
-        
-        let currentIssues = []; // Lista de problemas encontrados
-        let currentEditingItem = ""; // Item sendo editado no modal
+        // DADOS
+        const checklistItems = ["Óleo do Motor", "Filtro de Ar", "Freios", "Suspensão", "Pneus", "Arrefecimento"];
+        let issues = JSON.parse(localStorage.getItem('cm_issues') || '[]');
+        let clientStage = localStorage.getItem('cm_stage') || 'analyzing'; // analyzing, budget, maintenance, ready
 
-        // --- NAVEGAÇÃO ---
+        // NAVEGAÇÃO
         function switchMode(mode) {
             document.getElementById('mode-selector').classList.add('hidden');
             if(mode === 'mechanic') {
                 document.getElementById('view-mechanic').classList.remove('hidden');
                 document.getElementById('view-mechanic').classList.add('flex');
+                renderChecklist();
             } else {
                 document.getElementById('view-client').classList.remove('hidden');
                 document.getElementById('view-client').classList.add('flex');
-                loadClientView();
+                updateClientUI();
             }
         }
 
-        // --- FUNÇÕES DO MECÂNICO ---
-        function startBudget(car, plate) {
+        // --- LÓGICA MECÂNICO ---
+        function openChecklist() {
             document.getElementById('mech-dashboard').classList.add('hidden');
             document.getElementById('mech-checklist').classList.remove('hidden');
-            renderChecklist();
         }
 
-        function closeBudget() {
+        function closeChecklist() {
             document.getElementById('mech-checklist').classList.add('hidden');
             document.getElementById('mech-dashboard').classList.remove('hidden');
         }
 
         function renderChecklist() {
-            const container = document.getElementById('checklist-container');
-            container.innerHTML = ''; // Limpa
-
+            const container = document.getElementById('checklist-items');
+            container.innerHTML = '';
             checklistItems.forEach(item => {
-                // Verifica se o item já foi condenado
-                const issue = currentIssues.find(i => i.name === item);
-                const statusClass = issue ? 'border-red-500 bg-red-50' : 'border-slate-100 bg-white';
-                const statusIcon = issue ? '<i class="fa-solid fa-triangle-exclamation text-red-500"></i>' : '<i class="fa-regular fa-circle text-slate-300"></i>';
-
-                const html = `
-                <div class="p-4 rounded-xl border ${statusClass} shadow-sm transition">
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex items-center gap-3">
-                            ${statusIcon}
-                            <span class="font-bold text-slate-700 text-sm">${item}</span>
-                        </div>
-                        ${issue ? `<span class="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-1 rounded">CONDENADO: R$ ${issue.price}</span>` : ''}
-                    </div>
-                    
+                const issue = issues.find(i => i.name === item);
+                const style = issue ? 'border-red-500 bg-red-50' : 'border-slate-100 bg-white';
+                
+                container.innerHTML += `
+                <div class="p-4 rounded-xl border ${style} shadow-sm flex justify-between items-center">
+                    <span class="font-bold text-sm text-slate-700">${item}</span>
                     <div class="flex gap-2">
-                        <button onclick="markOk(this)" class="flex-1 bg-slate-100 hover:bg-green-100 hover:text-green-700 text-slate-500 text-xs font-bold py-2 rounded-lg transition border border-slate-200">
-                            <i class="fa-solid fa-check mr-1"></i> OK
-                        </button>
-                        <button onclick="openIssueModal('${item}')" class="flex-1 bg-slate-100 hover:bg-red-100 hover:text-red-700 text-slate-500 text-xs font-bold py-2 rounded-lg transition border border-slate-200">
-                            <i class="fa-solid fa-wrench mr-1"></i> PROBLEMA
-                        </button>
+                        <button onclick="this.innerHTML='OK'; this.className='text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded'" class="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded">OK</button>
+                        <button onclick="openModal('${item}')" class="text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded hover:bg-red-200">PROBLEMA</button>
                     </div>
                 </div>`;
-                container.innerHTML += html;
             });
         }
 
-        function markOk(btn) {
-            // Visual simples para marcar OK
-            btn.parentElement.parentElement.classList.remove('border-red-500', 'bg-red-50');
-            btn.parentElement.parentElement.classList.add('border-green-500', 'bg-green-50');
-            btn.innerHTML = '<i class="fa-solid fa-check-double mr-1"></i> VERIFICADO';
-            btn.classList.add('bg-green-200', 'text-green-800');
-        }
-
-        // --- MODAL LÓGICA ---
-        function openIssueModal(item) {
-            currentEditingItem = item;
-            document.getElementById('modal-item-title').innerText = item;
-            
-            // Limpa inputs
+        let currentItem = '';
+        function openModal(item) {
+            currentItem = item;
+            document.getElementById('modal-title').innerText = item;
+            document.getElementById('input-club-price').value = '';
             document.getElementById('input-market-price').value = '';
-            document.getElementById('input-club-price').value = '0,00';
-            document.querySelectorAll('.upload-box').forEach(b => {
-                b.classList.remove('filled');
-                b.innerHTML = b.innerHTML.includes('camera') ? '<i class="fa-solid fa-camera"></i>' : '<i class="fa-solid fa-video"></i> <span class="text-[10px] font-bold">VÍDEO (10s)</span>';
-            });
-
             document.getElementById('mech-modal').classList.remove('hidden');
             document.getElementById('mech-modal').classList.add('flex');
         }
@@ -280,108 +351,144 @@
             document.getElementById('mech-modal').classList.remove('flex');
         }
 
+        // CÁLCULO AUTOMÁTICO DE MERCADO (+40%)
+        function calcMarketPrice() {
+            const clubPrice = parseFloat(document.getElementById('input-club-price').value);
+            if(!isNaN(clubPrice)) {
+                const marketPrice = clubPrice * 1.40; // Adiciona 40%
+                document.getElementById('input-market-price').value = marketPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            }
+        }
+
         function fakeUpload(el) {
             el.classList.add('filled');
             el.innerHTML = '<i class="fa-solid fa-check text-xl"></i>';
         }
 
-        function calcModalPrice() {
-            let market = parseFloat(document.getElementById('input-market-price').value);
-            if(isNaN(market)) market = 0;
-            let club = market * 0.8; // Regra de 20% desconto
-            document.getElementById('input-club-price').value = club.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-        }
+        function confirmIssue() {
+            const clubVal = document.getElementById('input-club-price').value;
+            const marketVal = document.getElementById('input-market-price').value;
+            
+            if(!clubVal) return alert('Digite o valor Clube Motors');
 
-        function saveIssue() {
-            const marketPrice = document.getElementById('input-market-price').value;
-            const clubPrice = document.getElementById('input-club-price').value;
-
-            if(!marketPrice) {
-                alert("Digite o preço de mercado.");
-                return;
-            }
-
-            // Remove se já existia e adiciona novo
-            currentIssues = currentIssues.filter(i => i.name !== currentEditingItem);
-            currentIssues.push({
-                name: currentEditingItem,
-                market: marketPrice,
-                price: clubPrice
-            });
-
+            // Remove anterior se houver e adiciona novo
+            issues = issues.filter(i => i.name !== currentItem);
+            issues.push({ name: currentItem, club: clubVal, market: marketVal });
+            localStorage.setItem('cm_issues', JSON.stringify(issues));
+            
             closeModal();
-            renderChecklist(); // Atualiza a lista visualmente
+            renderChecklist();
         }
 
-        // --- ENVIO PARA CLIENTE ---
-        function sendBudgetToClient() {
-            if(currentIssues.length === 0) {
-                alert("Nenhum problema apontado. O carro está perfeito?");
-                // Poderia enviar checklist limpo, mas pra demo vamos exigir 1 problema
-                return;
-            }
-            // Salva no LocalStorage pro cliente ler
-            localStorage.setItem('clubemotors_budget', JSON.stringify(currentIssues));
-            alert("🚀 ORÇAMENTO ENVIADO!\n\nAgora acesse o modo CLIENTE para ver os itens.");
+        function sendBudget() {
+            if(issues.length === 0) return alert('Nenhum problema apontado. Marque pelo menos um item como Problema.');
+            localStorage.setItem('cm_stage', 'budget'); // Muda estado global
+            alert('✅ Orçamento enviado ao Cliente!');
             location.reload();
         }
 
-        // --- FUNÇÕES DO CLIENTE ---
-        function loadClientView() {
-            const data = localStorage.getItem('clubemotors_budget');
-            const container = document.getElementById('client-cards-container');
-            const footer = document.getElementById('client-footer-total');
+
+        // --- LÓGICA CLIENTE ---
+        function updateClientUI() {
+            const stage = localStorage.getItem('cm_stage') || 'analyzing';
+            const issuesData = JSON.parse(localStorage.getItem('cm_issues') || '[]');
+
+            // Atualiza Timeline (Bolinhas e Opacidade)
+            const steps = ['analyzing', 'budget', 'maintenance', 'ready'];
+            const stepIndex = steps.indexOf(stage) + 1; // +1 porque analyzing é o segundo ponto (0=recebido)
+
+            // Reseta Timeline
+            document.getElementById('dot-analyzing').className = 'dot';
+            document.getElementById('dot-budget').className = 'dot';
+            document.getElementById('dot-maintenance').className = 'dot';
+            document.getElementById('dot-ready').className = 'dot';
             
-            if(!data) {
-                container.innerHTML = '<div class="text-center py-10 text-slate-400">Nenhum orçamento pendente.</div>';
-                return;
+            document.getElementById('step-budget').classList.add('opacity-50');
+            document.getElementById('step-maintenance').classList.add('opacity-50');
+            document.getElementById('step-ready').classList.add('opacity-50');
+
+            // Ativa etapa correta
+            if(stage === 'analyzing') document.getElementById('dot-analyzing').className = 'dot current';
+            if(stage === 'budget') {
+                document.getElementById('dot-analyzing').className = 'dot active';
+                document.getElementById('dot-budget').className = 'dot current';
+                document.getElementById('step-budget').classList.remove('opacity-50');
+            }
+            if(stage === 'maintenance') {
+                document.getElementById('dot-analyzing').className = 'dot active';
+                document.getElementById('dot-budget').className = 'dot active';
+                document.getElementById('dot-maintenance').className = 'dot current';
+                document.getElementById('step-budget').classList.remove('opacity-50');
+                document.getElementById('step-maintenance').classList.remove('opacity-50');
+            }
+            if(stage === 'ready') {
+                document.getElementById('dot-analyzing').className = 'dot active';
+                document.getElementById('dot-budget').className = 'dot active';
+                document.getElementById('dot-maintenance').className = 'dot active';
+                document.getElementById('dot-ready').className = 'dot current'; // ou active verde
+                document.getElementById('step-budget').classList.remove('opacity-50');
+                document.getElementById('step-maintenance').classList.remove('opacity-50');
+                document.getElementById('step-ready').classList.remove('opacity-50');
             }
 
-            const issues = JSON.parse(data);
+            // Mostra Conteúdo Correto
+            document.getElementById('state-waiting').classList.add('hidden');
+            document.getElementById('state-budget').classList.add('hidden');
+            document.getElementById('state-maintenance').classList.add('hidden');
+            document.getElementById('state-ready').classList.add('hidden');
+
+            if(stage === 'analyzing') {
+                document.getElementById('state-waiting').classList.remove('hidden');
+            } else if (stage === 'budget') {
+                document.getElementById('state-budget').classList.remove('hidden');
+                renderClientBudget(issuesData);
+            } else if (stage === 'maintenance') {
+                document.getElementById('state-maintenance').classList.remove('hidden');
+            } else if (stage === 'ready') {
+                document.getElementById('state-ready').classList.remove('hidden');
+            }
+        }
+
+        function renderClientBudget(issuesList) {
+            const container = document.getElementById('budget-list');
             container.innerHTML = '';
             let total = 0;
 
-            issues.forEach((issue, index) => {
-                // Converte preço string "1.000,00" pra float pra somar
-                let priceFloat = parseFloat(issue.price.replace('.','').replace(',','.'));
-                total += priceFloat;
-
-                const cardHtml = `
-                <div id="card-${index}" class="bg-white rounded-2xl shadow-sm border border-red-100 overflow-hidden mb-4 slide-up" style="animation-delay: ${index * 0.1}s">
-                    <div class="bg-red-50 p-3 flex justify-between items-center border-b border-red-100">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-circle-exclamation text-red-500"></i>
-                            <span class="font-bold text-slate-800">${issue.name}</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-red-500 bg-white px-2 py-1 rounded border border-red-100">CRÍTICO</span>
+            issuesList.forEach((issue, idx) => {
+                total += parseFloat(issue.club);
+                container.innerHTML += `
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-3 bg-slate-50 border-b border-slate-100 font-bold text-slate-700 flex justify-between">
+                        ${issue.name}
+                        <span class="text-[10px] bg-red-100 text-red-600 px-2 py-1 rounded uppercase">Crítico</span>
                     </div>
                     <div class="p-4">
-                        <div class="grid grid-cols-3 gap-2 mb-3">
-                            <div class="bg-slate-100 h-16 rounded bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=100')"></div>
-                            <div class="bg-slate-100 h-16 rounded bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1626245341236-412cb283e459?w=100')"></div>
-                            <div class="bg-slate-900 h-16 rounded flex items-center justify-center text-white"><i class="fa-solid fa-play"></i></div>
+                         <div class="grid grid-cols-2 gap-2 mb-3">
+                            <div class="bg-slate-200 h-16 rounded flex items-center justify-center text-xs text-slate-400 font-bold">SUA PEÇA</div>
+                            <div class="bg-slate-200 h-16 rounded flex items-center justify-center text-xs text-slate-400 font-bold">NOVA</div>
                         </div>
-                        <div class="flex justify-between items-center bg-slate-50 p-3 rounded-lg border border-slate-100 mb-3">
-                            <span class="text-xs text-slate-400 line-through">R$ ${parseFloat(issue.market).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-                            <span class="text-xl font-black text-green-600">R$ ${issue.price}</span>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs text-slate-400 line-through">Mercado: R$ ${issue.market}</span>
+                            <span class="text-lg font-black text-green-600">R$ ${parseFloat(issue.club).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
                         </div>
-                        <button onclick="approveItem(${index}, this)" class="w-full bg-slate-200 hover:bg-green-600 hover:text-white text-slate-600 font-bold py-3 rounded-xl transition">
-                            APROVAR ITEM
-                        </button>
+                        <button onclick="this.innerHTML='APROVADO'; this.className='w-full bg-slate-100 text-slate-400 font-bold py-2 rounded-lg cursor-default'" class="w-full bg-green-100 hover:bg-green-600 hover:text-white text-green-700 font-bold py-2 rounded-lg transition text-xs">APROVAR ITEM</button>
                     </div>
                 </div>`;
-                container.innerHTML += cardHtml;
             });
-
-            document.getElementById('total-price-display').innerText = "R$ " + total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-            footer.classList.remove('hidden');
+            document.getElementById('total-amount').innerText = "R$ " + total.toLocaleString('pt-BR', {minimumFractionDigits: 2});
         }
 
-        function approveItem(index, btn) {
-            btn.classList.remove('bg-slate-200', 'text-slate-600');
-            btn.classList.add('bg-green-600', 'text-white');
-            btn.innerHTML = '<i class="fa-solid fa-check"></i> APROVADO';
-            btn.disabled = true;
+        function authorizeService() {
+            localStorage.setItem('cm_stage', 'maintenance');
+            alert('Serviço Autorizado!');
+            updateClientUI();
+        }
+
+        function advanceToReady() {
+            localStorage.setItem('cm_stage', 'ready');
+            updateClientUI();
+            // Scroll para topo
+            document.getElementById('view-client').querySelector('.overflow-y-auto').scrollTop = 0;
         }
 
     </script>
