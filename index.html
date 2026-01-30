@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clube Motors OS - Fluxo Completo</title>
+    <title>Clube Motors OS - Demo Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
@@ -45,11 +45,11 @@
     <div id="mode-selector" class="text-center text-white p-8 w-full max-w-md fade-in">
         <div class="mb-6 text-7xl animate-bounce">🛠️</div>
         <h1 class="text-4xl font-black mb-2 tracking-tight">Clube Motors</h1>
-        <p class="text-slate-400 mb-10 text-sm">Demo de Fluxo Real</p>
+        <p class="text-slate-400 mb-10 text-sm">Demo Oficial v2.0</p>
         
         <div class="space-y-4">
             <button onclick="switchMode('mechanic')" class="w-full bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3 transition shadow-lg border border-blue-400">
-                <i class="fa-solid fa-tablet-screen-button text-xl"></i> Acessar Mecânico
+                <i class="fa-solid fa-tablet-screen-button text-xl"></i> Acessar Oficina
             </button>
             <button onclick="switchMode('client')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-xl font-bold flex items-center justify-center gap-3 transition shadow-lg border border-emerald-400">
                 <i class="fa-solid fa-mobile-screen text-xl"></i> Acessar Cliente
@@ -58,9 +58,10 @@
         
         <div class="mt-8 p-4 bg-slate-800 rounded-lg text-xs text-slate-400 text-left">
             <strong>Instrução de Demo:</strong><br>
-            1. Entre como Mecânico e envie o orçamento.<br>
-            2. Saia e entre como Cliente para aprovar.<br>
-            3. Use o botão "Simular Fluxo" para ver as etapas finais.
+            1. Entre como <strong>Oficina</strong> e inicie o atendimento.<br>
+            2. Veja o Alerta do Fabricante.<br>
+            3. Aponte defeitos e suba fotos (Velha x Nova).<br>
+            4. Envie e entre como <strong>Cliente</strong> para aprovar.
         </div>
     </div>
 
@@ -70,12 +71,12 @@
                 <div class="bg-blue-600 text-[10px] font-bold px-2 py-1 rounded">BOX 04</div>
                 <button onclick="location.reload()" class="text-slate-400"><i class="fa-solid fa-power-off"></i></button>
             </div>
-            <h2 class="text-2xl font-black">Olá, Junior</h2>
-            <p class="text-sm text-slate-400">Fluxo de Trabalho: Ativo</p>
+            <h2 class="text-2xl font-black">Painel Oficina</h2>
+            <p class="text-sm text-slate-400">Fila de Atendimento</p>
         </div>
 
         <div id="mech-dashboard" class="flex-1 overflow-y-auto p-4 space-y-3">
-            <div onclick="openChecklist()" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 active:scale-95 transition cursor-pointer flex justify-between items-center group hover:border-blue-400">
+            <div onclick="showAlert()" class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 active:scale-95 transition cursor-pointer flex justify-between items-center group hover:border-blue-400">
                 <div class="flex gap-4 items-center">
                     <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
                         <i class="fa-solid fa-car"></i>
@@ -92,16 +93,49 @@
             </div>
         </div>
 
+        <div id="manufacturer-alert" class="hidden absolute inset-0 bg-slate-900/95 z-50 flex items-center justify-center p-4 fade-in">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+                <div class="bg-yellow-400 p-4 flex items-center gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-slate-900 text-2xl"></i>
+                    <h3 class="font-black text-slate-900 text-lg uppercase leading-tight">Atenção<br>Mecânico</h3>
+                </div>
+                <div class="p-6">
+                    <p class="text-sm font-bold text-slate-600 mb-4">Não se esqueça das Recomendações do Fabricante:</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg">
+                            <i class="fa-solid fa-circle-check text-blue-500 mt-1"></i>
+                            <span class="text-xs font-semibold text-slate-700"><strong>Amortecedores:</strong> a cada 40.000km</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg">
+                            <i class="fa-solid fa-circle-check text-blue-500 mt-1"></i>
+                            <span class="text-xs font-semibold text-slate-700"><strong>Molas:</strong> a cada 3 anos ("fadigam")</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg">
+                            <i class="fa-solid fa-circle-check text-blue-500 mt-1"></i>
+                            <span class="text-xs font-semibold text-slate-700"><strong>Fluido de Freio:</strong> 1x ao ano</span>
+                        </li>
+                        <li class="flex items-start gap-2 bg-slate-50 p-2 rounded-lg">
+                            <i class="fa-solid fa-circle-check text-blue-500 mt-1"></i>
+                            <span class="text-xs font-semibold text-slate-700"><strong>Correia Dentada:</strong> 40.000km ou 2 anos</span>
+                        </li>
+                    </ul>
+                    <button onclick="startChecklist()" class="w-full mt-6 bg-slate-900 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-slate-800 transition">
+                        ENTENDI, INICIAR ORDEM DE SERVIÇO
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div id="mech-checklist" class="hidden flex-1 flex flex-col h-full bg-slate-50 absolute top-0 w-full z-30 slide-up">
             <div class="bg-white p-4 pt-12 border-b border-slate-200 flex items-center gap-3 sticky top-0 z-40">
                 <button onclick="closeChecklist()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600"><i class="fa-solid fa-arrow-left"></i></button>
                 <div>
-                    <h2 class="font-bold text-slate-800 leading-none">Checklist Geral</h2>
+                    <h2 class="font-bold text-slate-800 leading-none">Checklist Completo</h2>
                     <p class="text-xs text-slate-500 mt-1">Onix • ABC-1234</p>
                 </div>
             </div>
 
-            <div id="checklist-items" class="flex-1 overflow-y-auto p-4 pb-32 space-y-3">
+            <div id="checklist-items" class="flex-1 overflow-y-auto p-4 pb-32 space-y-4">
                 </div>
 
             <div class="absolute bottom-0 w-full p-4 bg-white border-t border-slate-100">
@@ -125,13 +159,18 @@
                 <div class="p-6 space-y-6">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Evidências Visuais (Obrigatório)</label>
-                        <div class="grid grid-cols-3 gap-2 mb-2">
-                            <div onclick="fakeUpload(this)" class="upload-box h-20 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer"><i class="fa-solid fa-camera"></i></div>
-                            <div onclick="fakeUpload(this)" class="upload-box h-20 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer"><i class="fa-solid fa-camera"></i></div>
-                            <div onclick="fakeUpload(this)" class="upload-box h-20 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer"><i class="fa-solid fa-camera"></i></div>
+                        <div class="grid grid-cols-2 gap-3 mb-2">
+                            <div onclick="fakeUpload(this)" class="upload-box h-24 rounded-lg flex flex-col items-center justify-center text-slate-400 cursor-pointer text-center p-2">
+                                <i class="fa-solid fa-camera mb-1"></i>
+                                <span class="text-[9px] font-bold">PEÇA VELHA<br>(DANIFICADA)</span>
+                            </div>
+                            <div onclick="fakeUpload(this)" class="upload-box h-24 rounded-lg flex flex-col items-center justify-center text-slate-400 cursor-pointer text-center p-2">
+                                <i class="fa-solid fa-box-open mb-1"></i>
+                                <span class="text-[9px] font-bold">PEÇA NOVA<br>(COMO DEVE SER)</span>
+                            </div>
                         </div>
                         <div onclick="fakeUpload(this)" class="upload-box h-12 w-full rounded-lg flex items-center justify-center gap-2 text-slate-400 cursor-pointer">
-                            <i class="fa-solid fa-video"></i> <span class="text-[10px] font-bold">VÍDEO (10s)</span>
+                            <i class="fa-solid fa-video"></i> <span class="text-[10px] font-bold">VÍDEO DO PROBLEMA (10s)</span>
                         </div>
                     </div>
 
@@ -228,7 +267,7 @@
                 
                 <div id="state-waiting" class="text-center py-10">
                     <div class="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
-                    <p class="text-sm font-bold text-slate-600">Aguardando envio do mecânico...</p>
+                    <p class="text-sm font-bold text-slate-600">Aguardando envio da oficina...</p>
                     <p class="text-xs text-slate-400 mt-2">Você será notificado assim que a análise terminar.</p>
                 </div>
 
@@ -288,10 +327,30 @@
     </div>
 
     <script>
-        // DADOS
-        const checklistItems = ["Óleo do Motor", "Filtro de Ar", "Freios", "Suspensão", "Pneus", "Arrefecimento"];
+        // DADOS DO CHECKLIST (CATEGORIZADO E COMPLETO)
+        const checklistData = {
+            "Visual": [
+                "Luzes dianteiras", "Luzes traseiras", "Troca de óleo", "Luzes injeção eletrônica"
+            ],
+            "Suspensão": [
+                "Pneus", "Balanceamento", "Alinhamento", "Válvulas", "Roda", "Pivô", 
+                "Terminal direção", "Terminal axial", "Buchas", "Amortecedor dianteiro", 
+                "Amortecedor traseiro", "Mola dianteira", "Mola traseira", 
+                "Kits de amortecedor", "Coxim de amortecedor", "Bieletas"
+            ],
+            "Freio": [
+                "Pastilha dianteira", "Pastilha/Lona traseira", "Disco dianteiro", 
+                "Disco/Tambor traseiro", "Fluido de freio"
+            ],
+            "Mecânica": [
+                "Correia dentada", "Filtro combustível", "Filtro ar", "Filtro pólem", 
+                "Óleo motor", "Filtro óleo", "Vela", "Correias auxiliares", 
+                "Limpeza sistema de injeção"
+            ]
+        };
+
         let issues = JSON.parse(localStorage.getItem('cm_issues') || '[]');
-        let clientStage = localStorage.getItem('cm_stage') || 'analyzing'; // analyzing, budget, maintenance, ready
+        let clientStage = localStorage.getItem('cm_stage') || 'analyzing'; 
 
         // NAVEGAÇÃO
         function switchMode(mode) {
@@ -299,7 +358,7 @@
             if(mode === 'mechanic') {
                 document.getElementById('view-mechanic').classList.remove('hidden');
                 document.getElementById('view-mechanic').classList.add('flex');
-                renderChecklist();
+                // Não renderiza checklist ainda, espera o alerta
             } else {
                 document.getElementById('view-client').classList.remove('hidden');
                 document.getElementById('view-client').classList.add('flex');
@@ -307,10 +366,19 @@
             }
         }
 
-        // --- LÓGICA MECÂNICO ---
-        function openChecklist() {
+        // --- LÓGICA OFICINA ---
+        
+        // Passo 1: Mostrar Alerta ao Clicar no Carro
+        function showAlert() {
             document.getElementById('mech-dashboard').classList.add('hidden');
+            document.getElementById('manufacturer-alert').classList.remove('hidden');
+        }
+
+        // Passo 2: Iniciar Checklist após ler alerta
+        function startChecklist() {
+            document.getElementById('manufacturer-alert').classList.add('hidden');
             document.getElementById('mech-checklist').classList.remove('hidden');
+            renderChecklist();
         }
 
         function closeChecklist() {
@@ -321,19 +389,27 @@
         function renderChecklist() {
             const container = document.getElementById('checklist-items');
             container.innerHTML = '';
-            checklistItems.forEach(item => {
-                const issue = issues.find(i => i.name === item);
-                const style = issue ? 'border-red-500 bg-red-50' : 'border-slate-100 bg-white';
+            
+            // Loop pelas categorias
+            for (const [category, items] of Object.entries(checklistData)) {
+                // Título da Categoria
+                container.innerHTML += `<h3 class="font-black text-slate-400 text-xs uppercase tracking-widest mt-4 mb-2 pl-2 border-l-4 border-blue-500">${category}</h3>`;
                 
-                container.innerHTML += `
-                <div class="p-4 rounded-xl border ${style} shadow-sm flex justify-between items-center">
-                    <span class="font-bold text-sm text-slate-700">${item}</span>
-                    <div class="flex gap-2">
-                        <button onclick="this.innerHTML='OK'; this.className='text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded'" class="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded">OK</button>
-                        <button onclick="openModal('${item}')" class="text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded hover:bg-red-200">PROBLEMA</button>
-                    </div>
-                </div>`;
-            });
+                // Itens da Categoria
+                items.forEach(item => {
+                    const issue = issues.find(i => i.name === item);
+                    const style = issue ? 'border-red-500 bg-red-50' : 'border-slate-100 bg-white';
+                    
+                    container.innerHTML += `
+                    <div class="p-3 rounded-xl border ${style} shadow-sm flex justify-between items-center bg-white mb-2">
+                        <span class="font-bold text-sm text-slate-700">${item}</span>
+                        <div class="flex gap-2">
+                            <button onclick="this.innerHTML='<i class=\\'fa-solid fa-check\\'></i> OK'; this.className='text-[10px] font-bold text-green-600 bg-green-100 px-3 py-2 rounded'" class="text-[10px] font-bold text-slate-400 bg-slate-50 px-3 py-2 rounded hover:bg-green-50">OK</button>
+                            <button onclick="openModal('${item}')" class="text-[10px] font-bold text-red-600 bg-red-100 px-3 py-2 rounded hover:bg-red-200 shadow-sm"><i class="fa-solid fa-wrench"></i> PROBLEMA</button>
+                        </div>
+                    </div>`;
+                });
+            }
         }
 
         let currentItem = '';
@@ -344,6 +420,14 @@
             document.getElementById('input-market-price').value = '';
             document.getElementById('mech-modal').classList.remove('hidden');
             document.getElementById('mech-modal').classList.add('flex');
+            
+            // Reseta uploads visuais
+            document.querySelectorAll('.upload-box').forEach(box => {
+                box.classList.remove('filled');
+                if(box.innerText.includes('VELHA')) box.innerHTML = '<i class="fa-solid fa-camera mb-1"></i><span class="text-[9px] font-bold">PEÇA VELHA<br>(DANIFICADA)</span>';
+                else if(box.innerText.includes('NOVA')) box.innerHTML = '<i class="fa-solid fa-box-open mb-1"></i><span class="text-[9px] font-bold">PEÇA NOVA<br>(COMO DEVE SER)</span>';
+                else box.innerHTML = '<i class="fa-solid fa-video"></i> <span class="text-[10px] font-bold">VÍDEO DO PROBLEMA (10s)</span>';
+            });
         }
 
         function closeModal() {
@@ -362,7 +446,7 @@
 
         function fakeUpload(el) {
             el.classList.add('filled');
-            el.innerHTML = '<i class="fa-solid fa-check text-xl"></i>';
+            el.innerHTML = '<i class="fa-solid fa-check text-2xl text-green-500"></i>';
         }
 
         function confirmIssue() {
@@ -381,7 +465,7 @@
         }
 
         function sendBudget() {
-            if(issues.length === 0) return alert('Nenhum problema apontado. Marque pelo menos um item como Problema.');
+            if(issues.length === 0) return alert('Nenhum problema apontado. Marque pelo menos um item como Problema para testar.');
             localStorage.setItem('cm_stage', 'budget'); // Muda estado global
             alert('✅ Orçamento enviado ao Cliente!');
             location.reload();
@@ -394,10 +478,6 @@
             const issuesData = JSON.parse(localStorage.getItem('cm_issues') || '[]');
 
             // Atualiza Timeline (Bolinhas e Opacidade)
-            const steps = ['analyzing', 'budget', 'maintenance', 'ready'];
-            const stepIndex = steps.indexOf(stage) + 1; // +1 porque analyzing é o segundo ponto (0=recebido)
-
-            // Reseta Timeline
             document.getElementById('dot-analyzing').className = 'dot';
             document.getElementById('dot-budget').className = 'dot';
             document.getElementById('dot-maintenance').className = 'dot';
@@ -425,7 +505,7 @@
                 document.getElementById('dot-analyzing').className = 'dot active';
                 document.getElementById('dot-budget').className = 'dot active';
                 document.getElementById('dot-maintenance').className = 'dot active';
-                document.getElementById('dot-ready').className = 'dot current'; // ou active verde
+                document.getElementById('dot-ready').className = 'dot current';
                 document.getElementById('step-budget').classList.remove('opacity-50');
                 document.getElementById('step-maintenance').classList.remove('opacity-50');
                 document.getElementById('step-ready').classList.remove('opacity-50');
@@ -465,7 +545,7 @@
                     <div class="p-4">
                          <div class="grid grid-cols-2 gap-2 mb-3">
                             <div class="bg-slate-200 h-16 rounded flex items-center justify-center text-xs text-slate-400 font-bold">SUA PEÇA</div>
-                            <div class="bg-slate-200 h-16 rounded flex items-center justify-center text-xs text-slate-400 font-bold">NOVA</div>
+                            <div class="bg-green-100 h-16 rounded flex items-center justify-center text-xs text-green-600 font-bold border border-green-200">PEÇA NOVA</div>
                         </div>
                         <div class="flex justify-between items-center mb-1">
                             <span class="text-xs text-slate-400 line-through">Mercado: R$ ${issue.market}</span>
@@ -487,7 +567,6 @@
         function advanceToReady() {
             localStorage.setItem('cm_stage', 'ready');
             updateClientUI();
-            // Scroll para topo
             document.getElementById('view-client').querySelector('.overflow-y-auto').scrollTop = 0;
         }
 
